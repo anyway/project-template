@@ -62,10 +62,6 @@ Watchs for changes in local files and rebuilds parts of the site as necessary, i
 
 Runs `gulp watch` in the background, and serves the `dist` directory at `localhost:3000` with automatic reloading using [Browsersync][browsersync].
 
-### `gulp deploy`
-
-For use by the Minimill team only.  Deploys to `work.minimill.co/TITLE/`, but won't do so without proper authentication.
-
 ## Structure
 
 ```
@@ -86,7 +82,7 @@ For use by the Minimill team only.  Deploys to `work.minimill.co/TITLE/`, but wo
 [autoprefixer]: https://css-tricks.com/autoprefixer/
 [bable]: https://babeljs.io/
 [browsersync]: http://www.browsersync.io/
-[cssmin]: https://github.com/ben-eb/cssnano
+[cssnano]: http://cssnano.co/
 [es6]: https://github.com/lukehoban/es6features
 [gulp]: http://gulpjs.com/
 [handlebars]: http://handlebarsjs.com/
