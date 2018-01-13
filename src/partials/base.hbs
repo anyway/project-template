@@ -8,20 +8,20 @@
     <meta name="robots" content="NOODP, index, follow" />
     <meta itemprop="name" content="{{ meta.title }}">
     <meta itemprop="description" content="{{ meta.description }}">
-    <meta itemprop="image" content="{{ meta.image }}">
+    <meta itemprop="image" content="{{ meta.url }}{{ meta.image }}">
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="{{ meta.twitter_handle }}">
     <meta name="twitter:title" content="{{ meta.title }}">
     <meta name="twitter:description" content="{{ meta.description }}">
     <meta name="twitter:creator" content="{{ meta.twitter_handle }}">
-    <meta name="twitter:image:src" content="{{ meta.twitter_image }}">
+    <meta name="twitter:image:src" content="{{ meta.url }}{{ meta.twitter_image }}">
     <meta name="twitter:domain" content="{{ meta.domain }}">
     <!-- Open Graph data (Facebook) -->
     <meta property="og:title" content="{{ meta.title }}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ meta.url }}/" />
-    <meta property="og:image" content="{{ meta.facebook_image }}" />
+    <meta property="og:image" content="{{ meta.url }}{{ meta.facebook_image }}" />
     <meta property="og:description" content="{{ meta.description }}" />
     <!-- Apple Icons -->
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/favicon/apple-touch-icon-57x57.png" />
