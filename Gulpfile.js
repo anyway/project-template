@@ -29,27 +29,34 @@ var path = require('path');
 
 handlebars.Handlebars.registerHelper(layouts(handlebars.Handlebars));
 
+gulp.task('reload', function(done) {
+  done();
+  reload();
+});
+
 gulp.task('sass:lint', function() {
-  return gulp.src('./src/sass/*.scss')
+  return gulp.src('./src/sass/**/*.scss')
     .pipe(plumber())
-    .pipe(scsslint());
+    // .pipe(scsslint());
 });
 
 gulp.task('sass:build', function() {
-  return gulp.src('./src/sass/**/style.scss')
+  return gulp.src(['./src/sass/**/*.scss', '!./src/sass/**/_*.scss'])
     .pipe(rename({suffix: '.min'}))
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(sass({
       outputStyle: 'compressed',
     }))
-    .pipe(autoprefixer())
+    .pipe(autoprefixer({
+      browsers: ['last 1 version', '> 0.2%'],
+    }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./dist/css/'));
 });
 
 gulp.task('sass:optimized', function() {
-  return gulp.src('./src/sass/**/style.scss')
+  return gulp.src(['./src/sass/**/*.scss', '!./src/sass/**/_*.scss'])
     .pipe(rename({suffix: '.min'}))
     .pipe(plumber())
     .pipe(sass({
@@ -84,9 +91,9 @@ gulp.task('js', gulp.series('js:lint', 'js:build'));
 gulp.task('images', function() {
   return gulp.src('src/img/**/*')
     .pipe(plumber())
-    .pipe(imagemin({
-      progressive: true,
-    }))
+    // .pipe(imagemin({
+    //   progressive: true,
+    // }))
     .pipe(gulp.dest('./dist/img'));
 });
 
@@ -111,11 +118,7 @@ gulp.task('templates', function() {
   var options = {
     ignorePartials: true, //ignores the unknown footer2 partial in the handlebars template, defaults to false
     batch: ['./src/partials/'],
-    helpers: {
-      capitals: function(str) {
-        return str.toUpperCase();
-      },
-    },
+    helpers: {},
   };
 
   return gulp.src('./src/templates/**/*.hbs')
@@ -144,12 +147,11 @@ gulp.task('clean', function(done) {
   return del('./dist/', done);
 });
 
-
 gulp.task('watch', function() {
-  gulp.watch(['./src/templates/**/*.hbs', './src/partials/**/*.hbs'], gulp.series('templates', reload));
-  gulp.watch('./src/sass/**/*.scss', gulp.series('sass', reload));
-  gulp.watch('./src/img/**/*', gulp.series('images', reload));
-  gulp.watch(['./src/js/**/*.js', 'Gulpfile.js'], gulp.series('js', reload));
+  gulp.watch(['./src/templates/**/*.hbs', './src/partials/**/*.hbs'], gulp.series('templates', 'reload'));
+  gulp.watch(['./src/sass/**/*.scss'], gulp.series('sass', 'reload'));
+  gulp.watch('./src/img/**/*', gulp.series('images', 'reload'));
+  gulp.watch(['./src/js/**/*.js', 'Gulpfile.js'], gulp.series('js', 'reload'));
 });
 
 gulp.task('build',
@@ -163,8 +165,8 @@ gulp.task('build:optimized',
 ));
 
 gulp.task('deploy:rsync', function(done) {
-  cp.exec('rsync -avuzh ./dist/* root@minimill.co:/srv/minimill.co/public_html/', function() {
-    process.stdout.write('Deployed to minimill.co\n');
+  cp.exec('rsync -avuzh ./dist/* EXAMPLE:/srv/example.com/public_html/', function() {
+    process.stdout.write('Deployed to example.com\n');
     done();
   })
   .stdout.on('data', function(data) {
